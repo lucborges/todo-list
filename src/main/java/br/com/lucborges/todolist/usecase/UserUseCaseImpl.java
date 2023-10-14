@@ -1,5 +1,6 @@
 package br.com.lucborges.todolist.usecase;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import br.com.lucborges.todolist.entity.User;
 import br.com.lucborges.todolist.repository.IUserRepository;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,13 @@ public class UserUseCaseImpl implements UserUseCase{
 
     @Override
     public User userCreate(User user) {
+        String passwordCrypt = cryptUserPassword(user.getPassword());
+        user.setPassword(passwordCrypt);
         return userRepository.save(user);
+    }
+
+    public String cryptUserPassword(String password) {
+        return BCrypt.withDefaults()
+                .hashToString(12, password.toCharArray());
     }
 }
