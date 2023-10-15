@@ -47,7 +47,15 @@ public class TodoController {
     }
 
     @PutMapping(value = "/todo/{todoId}")
-    public Todo update(@RequestBody TodoDto todoDto, HttpServletRequest request, @PathVariable UUID todoId) {
-        return todoUseCase.updateTodo(todoId, adapter.todoDtoToTodo(todoDto, request.getAttribute("userId")));
+    public ResponseEntity update(@RequestBody TodoDto todoDto, HttpServletRequest request, @PathVariable UUID todoId) {
+        Object userId = request.getAttribute("userId");
+        if(!todoDto.getUserId().equals(userId)) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("User has not permission to update this todo");
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(todoUseCase.updateTodo(todoId, adapter.todoDtoToTodo(todoDto, userId)));
     }
 }
