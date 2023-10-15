@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface TodoUseCase {
     Todo todoCreate(Todo todo);
     List<Todo> listTodo(UUID userId);
+    Todo updateTodo(UUID id, Todo todo);
 }
