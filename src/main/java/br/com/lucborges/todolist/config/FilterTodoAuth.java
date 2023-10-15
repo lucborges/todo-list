@@ -23,7 +23,7 @@ public class FilterTodoAuth extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String servletPath = request.getServletPath();
 
-        if (servletPath.equals("/todo")) {
+        if (servletPath.startsWith("/todo")) {
             String authorization = request.getHeader("Authorization");
             String authEncoded = authorization.substring("Basic".length()).trim();
             byte[] authDecoded = Base64.getDecoder().decode(authEncoded);
